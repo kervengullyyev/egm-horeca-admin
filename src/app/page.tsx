@@ -96,7 +96,7 @@ export default function AdminDashboard() {
     { label: "Categories", icon: FolderOpen, color: "text-blue-600", href: "/categories" },
     { label: "Products", icon: Package, color: "text-green-600", href: "/products" },
     { label: "Orders", icon: ClipboardList, color: "text-purple-600", href: "/orders" },
-    { label: "Customers", icon: Users, color: "text-orange-600", href: "/customers" }
+    { label: "Users", icon: Users, color: "text-orange-600", href: "/users" }
   ];
 
   const recentActivity = [
@@ -174,12 +174,12 @@ export default function AdminDashboard() {
                 <h3 className="text-sm font-medium text-gray-600 mb-1">{card.title}</h3>
                 <p className="text-2xl font-bold text-gray-900 mb-2">{card.value}</p>
                 <p className="text-sm text-gray-500 mb-4">{card.change}</p>
-                <Link
-                  href={card.button === "View Orders" ? "/orders" : 
-                        card.button === "Manage Products" ? "/products" : 
-                        card.button === "View Customers" ? "/customers" : "#"}
-                  className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
-                >
+                                  <Link
+                    href={card.button === "View Orders" ? "/orders" : 
+                          card.button === "Manage Products" ? "/products" : 
+                          card.button === "View Customers" ? "/users" : "#"}
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                  >
                   {card.button}
                 </Link>
               </div>
