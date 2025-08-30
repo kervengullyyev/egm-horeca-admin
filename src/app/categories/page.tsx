@@ -85,7 +85,12 @@ export default function CategoriesPage() {
     formData.append('file', file);
     
     try {
-      const response = await fetch('http://localhost:8000/api/v1/upload-image', {
+      const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+      if (!backendUrl) {
+        throw new Error('NEXT_PUBLIC_BACKEND_URL environment variable must be set');
+      }
+      
+      const response = await fetch(`${backendUrl}/api/v1/upload-image`, {
         method: 'POST',
         body: formData,
       });
@@ -96,7 +101,7 @@ export default function CategoriesPage() {
       
       const result = await response.json();
       // Convert relative URL to full backend URL
-      const fullUrl = result.url.startsWith('http') ? result.url : `http://localhost:8000${result.url}`;
+      const fullUrl = result.url.startsWith('http') ? result.url : `${backendUrl}${result.url}`;
       console.log("Original URL from backend:", result.url);
       console.log("Full URL for admin:", fullUrl);
       return fullUrl;
