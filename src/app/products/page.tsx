@@ -11,13 +11,11 @@ import {
   Settings, 
   User, 
   LogOut,
-  Search,
   Plus,
   X,
-  Edit,
-  Trash2,
   Upload,
-  Image as ImageIcon
+  Edit,
+  Trash2
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,9 +31,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DataTable } from "@/components/ui/data-table";
+import { createColumns } from "./columns";
 
 export default function ProductsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
@@ -414,11 +413,7 @@ export default function ProductsPage() {
     }
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.name_ro.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.sku?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -469,25 +464,8 @@ export default function ProductsPage() {
             <p className="text-gray-600 mt-1">Manage your product catalog</p>
           </div>
           
-          {/* Search and Actions */}
-          <div className="mt-6 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-80 px-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
-                />
-              </div>
-              <button className="p-2 border border-gray-300 rounded-full hover:bg-gray-50 transition-colors">
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.207A1 1 0 013 6.5V4z" />
-                </svg>
-              </button>
-            </div>
+          {/* Actions */}
+          <div className="mt-6 flex items-center justify-end">
             
             <Dialog open={showModal} onOpenChange={setShowModal}>
               <DialogTrigger asChild>
@@ -789,108 +767,25 @@ export default function ProductsPage() {
           </div>
         </div>
 
-        {/* Products Table */}
+        {/* Products Data Table */}
         <div className="p-6">
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold text-gray-900">Products ({products.length})</h3>
-          </div>
-          
           {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
               <div className="text-gray-600">Loading products...</div>
             </div>
-          ) : products.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-400 text-lg">No products found</div>
-              <p className="text-gray-500 mt-2">Create your first product to get started</p>
-            </div>
           ) : (
-            <>
-              {/* Table Headers */}
-              <div className="grid grid-cols-7 gap-4 px-4 py-3 bg-gray-50 rounded-lg mb-4 font-medium text-gray-700">
-                <div>ID</div>
-                <div>Images</div>
-                <div>Name</div>
-                <div>Category</div>
-                <div>Price</div>
-                <div>Stock</div>
-                <div>Actions</div>
-              </div>
-
-              {/* Products List */}
-              {filteredProducts.map((product) => (
-                <div key={product.id} className="grid grid-cols-7 gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50">
-                  <div className="font-medium">{product.id}</div>
-                  <div className="flex items-center gap-2">
-                    {product.images && product.images.length > 0 ? (
-                      <div className="flex gap-1">
-                        {product.images.slice(0, 2).map((image, index) => (
-                          <div key={index} className="relative">
-                            <Image 
-                              src={image} 
-                              alt={`${product.name_en} ${index + 1}`}
-                              width={48}
-                              height={48}
-                              className="w-12 h-12 object-cover rounded-lg border border-gray-200"
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                                const parent = e.currentTarget.parentElement;
-                                if (parent) {
-                                  const placeholder = parent.querySelector('.placeholder-fallback') as HTMLElement;
-                                  if (placeholder) placeholder.style.display = 'flex';
-                                }
-                              }}
-                            />
-                            <div className="placeholder-fallback hidden w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center absolute inset-0">
-                              <ImageIcon className="h-6 w-6 text-gray-400" />
-                            </div>
-                          </div>
-                        ))}
-                        {product.images.length > 2 && (
-                          <div className="w-12 h-12 bg-gray-100 rounded-lg border border-gray-200 flex items-center justify-center text-xs text-gray-500">
-                            +{product.images.length - 2}
-                          </div>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-                        <ImageIcon className="h-6 w-6 text-gray-400" />
-                      </div>
-                    )}
-                  </div>
-                  <div>{product.name_en}</div>
-                  <div className="text-sm text-gray-600">
-                    {categories.find(c => c.id === product.category_id)?.name_en || 'Unknown'}
-                  </div>
-                  <div className="font-medium">{product.price} RON</div>
-                  <div className="text-sm text-gray-600">{product.stock_quantity}</div>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={() => handleEdit(product)}
-                      className="p-1 text-blue-600 hover:bg-blue-50 rounded"
-                      title="Edit product"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </button>
-                    <button 
-                      onClick={() => openVariantsModal(product)}
-                      className="p-1 text-purple-600 hover:bg-purple-50 rounded"
-                      title="Manage variants"
-                    >
-                      <Package className="h-4 w-4" />
-                    </button>
-                    <button 
-                      onClick={() => openDeleteModal(product)}
-                      className="p-1 text-red-600 hover:bg-red-50 rounded"
-                      title="Delete product"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </>
+            <DataTable 
+              columns={createColumns({ 
+                categories, 
+                onEdit: handleEdit, 
+                onVariants: openVariantsModal, 
+                onDelete: openDeleteModal 
+              })} 
+              data={products}
+              searchKey="name_en"
+              searchPlaceholder="Search products..."
+            />
           )}
         </div>
       </div>

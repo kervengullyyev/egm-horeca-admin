@@ -11,8 +11,6 @@ import {
   Settings, 
   User as UserIcon, 
   LogOut,
-  Search,
-  Plus,
   Eye,
   Edit,
   Trash2
@@ -29,9 +27,10 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DataTable } from "@/components/ui/data-table";
+import { createColumns } from "./columns";
 
 export default function UsersPage() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -67,12 +66,7 @@ export default function UsersPage() {
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.full_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    (user.phone && user.phone.includes(searchQuery))
-  );
+
 
   const handleViewUser = (user: User) => {
     setSelectedUser(user);
@@ -229,31 +223,11 @@ export default function UsersPage() {
             {/* Action Bar */}
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Search users..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
-                  />
-                </div>
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
-                  <Plus className="h-4 w-4" />
-                  New User
-                </button>
               </div>
             </div>
 
-            {/* Customers Table */}
+            {/* Users Data Table */}
             <div className="p-6">
-              <div className="mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Users ({filteredUsers.length})
-                </h3>
-              </div>
-              
               {loading ? (
                 <div className="text-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
@@ -269,58 +243,17 @@ export default function UsersPage() {
                     Retry
                   </button>
                 </div>
-              ) : filteredUsers.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-gray-400 text-lg">
-                    {searchQuery ? 'No users match your search' : 'No users found'}
-                  </div>
-                </div>
               ) : (
-                <>
-                  {/* Table Headers */}
-                  <div className="grid grid-cols-5 gap-4 px-4 py-3 bg-gray-50 rounded-lg mb-4 font-medium text-gray-700">
-                    <div>ID</div>
-                    <div>Name</div>
-                    <div>Email</div>
-                    <div>Phone</div>
-                    <div>Actions</div>
-                  </div>
-
-                  {/* Users List */}
-                  {filteredUsers.map((user) => (
-                    <div key={user.id} className="grid grid-cols-5 gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                      <div className="text-sm text-gray-600 font-mono">{user.id}</div>
-                      <div className="font-medium text-gray-900">
-                        {user.full_name}
-                      </div>
-                      <div className="text-gray-600">{user.email}</div>
-                      <div className="text-gray-600">{user.phone || 'N/A'}</div>
-                      <div className="flex items-center gap-2">
-                        <button 
-                          onClick={() => handleViewUser(user)}
-                          className="p-1 text-blue-600 hover:text-blue-800 transition-colors"
-                          title="View user details"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button 
-                          onClick={() => handleEditUser(user)}
-                          className="p-1 text-green-600 hover:text-green-800 transition-colors"
-                          title="Edit user"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                        <button 
-                          onClick={() => handleDeleteUser(user)}
-                          className="p-1 text-red-600 hover:text-red-800 transition-colors"
-                          title="Delete user"
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </>
+                <DataTable 
+                  columns={createColumns({ 
+                    onView: handleViewUser, 
+                    onEdit: handleEditUser, 
+                    onDelete: handleDeleteUser 
+                  })} 
+                  data={users}
+                  searchKey="full_name"
+                  searchPlaceholder="Search users by name, username, or email..."
+                />
               )}
             </div>
           </div>

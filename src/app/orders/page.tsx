@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
-import { Eye, Edit, Package, Truck, CheckCircle, XCircle, Clock, Search, Home, FolderOpen, Package as PackageIcon, ClipboardList, Users, MessageCircle, Settings, User, LogOut, Image as ImageIcon } from "lucide-react";
+import { Eye, Edit, Package, Truck, CheckCircle, XCircle, Clock, Home, FolderOpen, Package as PackageIcon, ClipboardList, Users, MessageCircle, Settings, User, LogOut, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -14,13 +14,13 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Order } from "@/lib/api";
+import { DataTable } from "@/components/ui/data-table";
+import { createColumns } from "./columns";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [editingOrder, setEditingOrder] = useState<Order | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [viewingOrder, setViewingOrder] = useState<Order | null>(null);
@@ -164,16 +164,7 @@ export default function OrdersPage() {
     }
   };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = 
-      order.order_number.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.customer_email.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === "all" || order.order_status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -240,37 +231,13 @@ export default function OrdersPage() {
             {/* Action Bar */}
             <div className="p-6 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="relative">
-                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                    <input
-                      type="text"
-                      placeholder="Search orders by number, customer name, or email..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-80 px-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
-                    />
-                  </div>
-                  <select
-                    value={statusFilter}
-                    onChange={(e) => setStatusFilter(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-colors"
-                  >
-                    <option value="all">All Statuses</option>
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="shipped">Shipped</option>
-                    <option value="delivered">Delivered</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
-                </div>
                 <div className="text-sm text-gray-600">
-                  Showing {filteredOrders.length} of {orders.length} orders
+                  Showing {orders.length} orders
                 </div>
               </div>
             </div>
 
-            {/* Orders Table */}
+            {/* Orders Data Table */}
             <div className="px-6 pt-2 pb-6">
               {loading ? (
                 <div className="text-center py-12">
@@ -289,92 +256,21 @@ export default function OrdersPage() {
                     </button>
                   </div>
                 </div>
-              ) : filteredOrders.length === 0 ? (
-                <div className="text-center py-12">
-                  <div className="text-gray-400 text-lg">No orders found</div>
-                  <p className="text-gray-500 mt-2">
-                    {searchQuery || statusFilter !== "all" ? "No orders match your search" : "Orders will appear here once customers start placing them"}
-                  </p>
-                </div>
               ) : (
-                <>
-                  {/* Table Headers */}
-                  <div className="grid grid-cols-8 gap-4 px-4 py-3 bg-gray-50 rounded-lg mb-4 font-medium text-gray-700">
-                    <div>Order Details</div>
-                    <div>Customer</div>
-                    <div>Contact</div>
-                    <div>Amount</div>
-                    <div>Payment Status</div>
-                    <div>Order Status</div>
-                    <div>Date</div>
-                    <div>Actions</div>
-                  </div>
-
-                  {/* Orders List */}
-                  {filteredOrders.map((order) => (
-                    <div key={order.id} className="grid grid-cols-8 gap-4 px-4 py-3 border-b border-gray-200 hover:bg-gray-50">
-                      <div>
-                        <div className="font-medium">{order.order_number}</div>
-                        <div className="text-sm text-gray-500">
-                          {order.order_items_count} item{order.order_items_count !== 1 ? 's' : ''}
-                        </div>
-                      </div>
-                      <div>
-                        <div className="font-medium">{order.customer_name}</div>
-                        <div className="text-sm text-gray-500">{order.customer_email}</div>
-                        {order.company_name && (
-                          <div className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full mt-1">
-                            Company
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <div className="text-sm text-gray-600">
-                          {order.customer_phone || 'No phone'}
-                        </div>
-                        {order.company_name && (
-                          <div className="text-xs text-gray-500 truncate" title={order.company_name}>
-                            {order.company_name}
-                          </div>
-                        )}
-                      </div>
-                      <div className="font-medium">
-                        {order.currency} {order.total_amount.toFixed(2)}
-                      </div>
-                      <div className="flex items-center">
-                        {getPaymentStatusIcon(order.payment_status)}
-                        <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getPaymentStatusColor(order.payment_status)}`}>
-                          {order.payment_status.charAt(0).toUpperCase() + order.payment_status.slice(1)}
-                        </span>
-                      </div>
-                      <div className="flex items-center">
-                        {getStatusIcon(order.order_status)}
-                        <span className={`ml-2 inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(order.order_status)}`}>
-                          {order.order_status.charAt(0).toUpperCase() + order.order_status.slice(1)}
-                        </span>
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        {formatDate(order.created_at)}
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleViewOrder(order)}
-                          className="p-1 text-blue-600 hover:bg-blue-50 rounded"
-                          title="View Order Details"
-                        >
-                          <Eye className="h-4 w-4" />
-                        </button>
-                        <button
-                          onClick={() => handleEditOrder(order)}
-                          className="p-1 text-green-600 hover:bg-blue-50 rounded"
-                          title="Edit Order"
-                        >
-                          <Edit className="h-4 w-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </>
+                <DataTable 
+                  columns={createColumns({ 
+                    onView: handleViewOrder, 
+                    onEdit: handleEditOrder, 
+                    getPaymentStatusIcon, 
+                    getPaymentStatusColor, 
+                    getStatusIcon, 
+                    getStatusColor, 
+                    formatDate 
+                  })} 
+                  data={orders}
+                  searchKey="customer_name"
+                  searchPlaceholder="Search orders by customer name, order number, or email..."
+                />
               )}
             </div>
           </div>
