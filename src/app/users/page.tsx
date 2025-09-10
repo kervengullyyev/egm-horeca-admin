@@ -1,12 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { 
-  Eye,
-  Edit,
-  Trash2
-} from "lucide-react";
-import Link from "next/link";
+// Icons are used in the columns file, not directly in this component
 import api, { User } from "@/lib/api";
 import {
   Dialog,
@@ -37,7 +32,17 @@ export default function UsersPage() {
     full_name: "",
     phone: "",
     role: "customer",
-    is_active: true
+    is_active: true,
+    // Address and entity information
+    entity_type: "individual",
+    tax_id: "",
+    company_name: "",
+    trade_register_no: "",
+    bank_name: "",
+    iban: "",
+    county: "",
+    city: "",
+    address: ""
   });
 
   useEffect(() => {
@@ -73,7 +78,17 @@ export default function UsersPage() {
       full_name: user.full_name,
       phone: user.phone || "",
       role: user.role,
-      is_active: user.is_active
+      is_active: user.is_active,
+      // Address and entity information
+      entity_type: user.entity_type || "individual",
+      tax_id: user.tax_id || "",
+      company_name: user.company_name || "",
+      trade_register_no: user.trade_register_no || "",
+      bank_name: user.bank_name || "",
+      iban: user.iban || "",
+      county: user.county || "",
+      city: user.city || "",
+      address: user.address || ""
     });
     setShowEditModal(true);
   };
@@ -136,7 +151,17 @@ export default function UsersPage() {
       full_name: "",
       phone: "",
       role: "customer",
-      is_active: true
+      is_active: true,
+      // Address and entity information
+      entity_type: "individual",
+      tax_id: "",
+      company_name: "",
+      trade_register_no: "",
+      bank_name: "",
+      iban: "",
+      county: "",
+      city: "",
+      address: ""
     });
   };
 
@@ -201,7 +226,7 @@ export default function UsersPage() {
 
       {/* View User Modal */}
       <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="!max-w-5xl !w-full sm:!max-w-5xl md:!max-w-5xl lg:!max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>User Details</DialogTitle>
             <DialogDescription>
@@ -210,65 +235,192 @@ export default function UsersPage() {
           </DialogHeader>
           
           {selectedUser && (
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
-                <p className="text-sm text-gray-900 font-mono">{selectedUser.id}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <p className="text-sm text-gray-900">{selectedUser.full_name}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                <p className="text-sm text-gray-900">{selectedUser.username}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <p className="text-sm text-gray-900">{selectedUser.email}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <p className="text-sm text-gray-900">{selectedUser.phone || 'N/A'}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                <p className="text-sm text-gray-900 capitalize">{selectedUser.role}</p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <p className={`text-sm ${selectedUser.is_active ? 'text-green-600' : 'text-red-600'}`}>
-                  {selectedUser.is_active ? 'Active' : 'Inactive'}
-                </p>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Created</label>
-                <p className="text-sm text-gray-900">
-                  {new Date(selectedUser.created_at).toLocaleDateString()}
-                </p>
-              </div>
-              {selectedUser.updated_at && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Last Updated</label>
-                  <p className="text-sm text-gray-900">
-                    {new Date(selectedUser.updated_at).toLocaleDateString()}
-                  </p>
+            <>
+              {/* Two Column Layout */}
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                {/* Left Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">User ID</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg font-mono">
+                      {selectedUser.id}
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      {selectedUser.full_name}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      {selectedUser.username}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      {selectedUser.email}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      {selectedUser.phone || 'N/A'}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Created Date</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      {new Date(selectedUser.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}
+                    </div>
+                  </div>
+
+                  {selectedUser.updated_at && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Last Updated</label>
+                      <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                        {new Date(selectedUser.updated_at).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Address Information */}
+                  <div className="border-t pt-4">
+                    <h4 className="font-medium text-gray-900 mb-3">Address Information</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Entity Type</label>
+                        <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                          <span className="capitalize">{selectedUser.entity_type || 'N/A'}</span>
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">County</label>
+                        <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                          {selectedUser.county || 'N/A'}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                        <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                          {selectedUser.city || 'N/A'}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                        <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                          {selectedUser.address || 'N/A'}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
+
+                {/* Right Column */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      <span className="capitalize">{selectedUser.role}</span>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                      <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                        selectedUser.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                      }`}>
+                        {selectedUser.is_active ? 'Active' : 'Inactive'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Company Information */}
+                  {selectedUser.entity_type === 'company' && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-3">Company Information</h4>
+                      <div className="space-y-3">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                            {selectedUser.company_name || 'N/A'}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Tax ID</label>
+                          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                            {selectedUser.tax_id || 'N/A'}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Trade Register No.</label>
+                          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                            {selectedUser.trade_register_no || 'N/A'}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Bank Name</label>
+                          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                            {selectedUser.bank_name || 'N/A'}
+                          </div>
+                        </div>
+                        
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">IBAN</label>
+                          <div className="px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg">
+                            {selectedUser.iban || 'N/A'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Close Button - Full Width at Bottom */}
+              <div className="pt-6 border-t">
+                <Button
+                  variant="outline"
+                  onClick={closeViewModal}
+                  className="w-full"
+                >
+                  Close
+                </Button>
+              </div>
+            </>
           )}
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={closeViewModal}>
-              Close
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Edit User Modal */}
       <Dialog open={showEditModal} onOpenChange={setShowEditModal}>
-        <DialogContent className="max-w-md">
+        <DialogContent className="!max-w-5xl !w-full sm:!max-w-5xl md:!max-w-5xl lg:!max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit User</DialogTitle>
             <DialogDescription>
@@ -276,96 +428,251 @@ export default function UsersPage() {
             </DialogDescription>
           </DialogHeader>
           
-          <form onSubmit={handleSubmitEdit} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email *
-              </label>
-              <Input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
+          <form onSubmit={handleSubmitEdit}>
+            {/* Two Column Layout */}
+            <div className="grid grid-cols-2 gap-6 mb-6">
+              {/* Left Column */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email *
+                  </label>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Username *
+                  </label>
+                  <Input
+                    type="text"
+                    name="username"
+                    value={formData.username}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name *
+                  </label>
+                  <Input
+                    type="text"
+                    name="full_name"
+                    value={formData.full_name}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone
+                  </label>
+                  <Input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleInputChange}
+                  />
+                </div>
+
+                {/* Address Information */}
+                <div className="border-t pt-4">
+                  <h4 className="font-medium text-gray-900 mb-3">Address Information</h4>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Entity Type *
+                      </label>
+                      <select
+                        name="entity_type"
+                        value={formData.entity_type}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+                      >
+                        <option value="individual">Individual Person</option>
+                        <option value="company">Legal Entity/Company</option>
+                      </select>
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        County *
+                      </label>
+                      <Input
+                        type="text"
+                        name="county"
+                        value={formData.county}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        City *
+                      </label>
+                      <Input
+                        type="text"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Address *
+                      </label>
+                      <Input
+                        type="text"
+                        name="address"
+                        value={formData.address}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column */}
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Role *
+                  </label>
+                  <select
+                    name="role"
+                    value={formData.role}
+                    onChange={handleInputChange}
+                    required
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
+                  >
+                    <option value="customer">Customer</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Status
+                  </label>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="is_active"
+                      checked={formData.is_active}
+                      onChange={handleInputChange}
+                      className="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
+                    />
+                    <label className="ml-2 block text-sm text-gray-900">
+                      User is active
+                    </label>
+                  </div>
+                </div>
+
+                {/* Company Information */}
+                {formData.entity_type === 'company' && (
+                  <div>
+                    <h4 className="font-medium text-gray-900 mb-3">Company Information</h4>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Company Name *
+                        </label>
+                        <Input
+                          type="text"
+                          name="company_name"
+                          value={formData.company_name}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Tax ID *
+                        </label>
+                        <Input
+                          type="text"
+                          name="tax_id"
+                          value={formData.tax_id}
+                          onChange={handleInputChange}
+                          required
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Trade Register No.
+                        </label>
+                        <Input
+                          type="text"
+                          name="trade_register_no"
+                          value={formData.trade_register_no}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Bank Name
+                        </label>
+                        <Input
+                          type="text"
+                          name="bank_name"
+                          value={formData.bank_name}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          IBAN
+                        </label>
+                        <Input
+                          type="text"
+                          name="iban"
+                          value={formData.iban}
+                          onChange={handleInputChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Username *
-              </label>
-              <Input
-                type="text"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name *
-              </label>
-              <Input
-                type="text"
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone
-              </label>
-              <Input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-              />
-            </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Role *
-              </label>
-              <select
-                name="role"
-                value={formData.role}
-                onChange={handleInputChange}
-                required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
-              >
-                <option value="customer">Customer</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            
-            <div className="flex items-center">
-              <input
-                type="checkbox"
-                name="is_active"
-                checked={formData.is_active}
-                onChange={handleInputChange}
-                className="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
-              />
-              <label className="ml-2 block text-sm text-gray-900">
-                User is active
-              </label>
+
+            {/* Action Buttons */}
+            <div className="pt-6 border-t">
+              <div className="flex gap-3">
+                <Button
+                  onClick={handleSubmitEdit}
+                  className="flex-1"
+                >
+                  Update User
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={closeEditModal}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           </form>
-          
-          <DialogFooter>
-            <Button variant="outline" onClick={closeEditModal}>
-              Cancel
-            </Button>
-            <Button onClick={handleSubmitEdit}>
-              Update User
-            </Button>
-          </DialogFooter>
         </DialogContent>
       </Dialog>
 

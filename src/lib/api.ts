@@ -128,6 +128,16 @@ export interface User {
   is_active: boolean;
   created_at: string;
   updated_at?: string;
+  // Address and entity information
+  entity_type?: string;
+  tax_id?: string;
+  company_name?: string;
+  trade_register_no?: string;
+  bank_name?: string;
+  iban?: string;
+  county?: string;
+  city?: string;
+  address?: string;
 }
 
 export interface Customer {
