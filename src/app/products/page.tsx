@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { DataTable } from "@/components/ui/data-table";
 import { createColumns } from "./columns";
 import AdminLayout from "@/components/AdminLayout";
@@ -45,7 +46,9 @@ export default function ProductsPage() {
     brand: "",
     sku: "",
     stock_quantity: "",
-    images: ""
+    images: "",
+    is_featured: false,
+    is_top_product: false
   });
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -186,7 +189,9 @@ export default function ProductsPage() {
         brand: formData.brand,
         sku: formData.sku,
         stock_quantity: parseInt(formData.stock_quantity) || 0,
-        images: imageUrls ? imageUrls.split(',').filter(img => img.trim()) : []
+        images: imageUrls ? imageUrls.split(',').filter(img => img.trim()) : [],
+        is_featured: formData.is_featured,
+        is_top_product: formData.is_top_product
       };
       
       if (editingProduct) {
@@ -222,7 +227,9 @@ export default function ProductsPage() {
       brand: product.brand || "",
       sku: product.sku || "",
       stock_quantity: product.stock_quantity?.toString() || "",
-      images: Array.isArray(product.images) ? product.images.join(',') : (product.images || "")
+      images: Array.isArray(product.images) ? product.images.join(',') : (product.images || ""),
+      is_featured: product.is_featured || false,
+      is_top_product: product.is_top_product || false
     });
     setImageFiles([]);
     setImagePreviews([]);
@@ -245,7 +252,9 @@ export default function ProductsPage() {
       brand: "",
       sku: "",
       stock_quantity: "",
-      images: ""
+      images: "",
+      is_featured: false,
+      is_top_product: false
     });
     setImageFiles([]);
     setImagePreviews([]);
@@ -266,7 +275,9 @@ export default function ProductsPage() {
       brand: "",
       sku: "",
       stock_quantity: "",
-      images: ""
+      images: "",
+      is_featured: false,
+      is_top_product: false
     });
     setImageFiles([]);
     setImagePreviews([]);
@@ -596,6 +607,31 @@ export default function ProductsPage() {
                       maxLength={200}
                       placeholder="Brief description (max 200 characters)"
                     />
+                  </div>
+                  
+                  {/* Product Status Toggles */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center space-x-3">
+                      <Switch
+                        id="is_featured"
+                        checked={formData.is_featured}
+                        onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_featured: checked }))}
+                      />
+                      <label htmlFor="is_featured" className="text-sm font-medium text-gray-700">
+                        Featured Product
+                      </label>
+                    </div>
+                    
+                    <div className="flex items-center space-x-3">
+                      <Switch
+                        id="is_top_product"
+                        checked={formData.is_top_product}
+                        onCheckedChange={(checked) => setFormData(prev => ({ ...prev, is_top_product: checked }))}
+                      />
+                      <label htmlFor="is_top_product" className="text-sm font-medium text-gray-700">
+                        Top Product
+                      </label>
+                    </div>
                   </div>
                   
                   <div>
