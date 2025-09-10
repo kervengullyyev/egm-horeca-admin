@@ -23,6 +23,7 @@ import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
 import AdminLayout from "@/components/AdminLayout";
+import SortableCategoriesTable from "@/components/SortableCategoriesTable";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -245,6 +246,10 @@ export default function CategoriesPage() {
     setImagePreview("");
   };
 
+  const handleReorder = (reorderedCategories: Category[]) => {
+    setCategories(reorderedCategories);
+  };
+
 
 
   return (
@@ -444,11 +449,11 @@ export default function CategoriesPage() {
               <div className="text-gray-600">Loading categories...</div>
             </div>
           ) : (
-            <DataTable 
-              columns={columns} 
-              data={categories}
-              searchKey="name_en"
-              searchPlaceholder="Search categories..."
+            <SortableCategoriesTable
+              categories={categories}
+              onEdit={handleEdit}
+              onDelete={openDeleteDialog}
+              onReorder={handleReorder}
             />
           )}
         </div>

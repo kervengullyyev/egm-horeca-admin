@@ -192,6 +192,7 @@ export default function UsersPage() {
                   data={users}
                   searchKey="full_name"
                   searchPlaceholder="Search users by name, username, or email..."
+                  initialSorting={[{ id: "id", desc: false }]}
                 />
               )}
             </div>

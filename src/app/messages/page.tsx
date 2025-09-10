@@ -109,6 +109,7 @@ export default function MessagesPage() {
                   data={messages}
                   searchKey="name"
                   searchPlaceholder="Search messages by name, email, or subject..."
+                  initialSorting={[{ id: "id", desc: false }]}
                 />
               )}
             </div>

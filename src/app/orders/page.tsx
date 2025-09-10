@@ -218,6 +218,7 @@ export default function OrdersPage() {
                   data={orders}
                   searchKey="customer_name"
                   searchPlaceholder="Search orders by customer name, order number, or email..."
+                  initialSorting={[{ id: "created_at", desc: true }]}
                 />
               )}
             </div>

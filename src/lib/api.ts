@@ -49,7 +49,7 @@ class ApiClient {
     });
   }
 
-  async put<T>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
+  async put<T>(endpoint: string, data?: Record<string, unknown> | unknown[]): Promise<T> {
     return this.request<T>(endpoint, {
       method: 'PUT',
       body: data ? JSON.stringify(data) : undefined,
@@ -72,6 +72,7 @@ export interface Category {
   description_en?: string;
   description_ro?: string;
   image_url?: string;
+  sort_order: number;
   is_active: boolean;
   created_at: string;
   updated_at?: string;
@@ -216,6 +217,8 @@ export const api = {
   createCategory: (data: Partial<Category>) => apiClient.post<Category>('/categories', data),
   updateCategory: (id: number, data: Partial<Category>) => apiClient.put<Category>(`/categories/${id}`, data),
   deleteCategory: (id: number) => apiClient.delete(`/categories/${id}`),
+  reorderCategories: (reorderData: Array<{ category_id: number; new_position: number }>) => 
+    apiClient.put('/categories-reorder', reorderData),
 
   // Products
   getProducts: (params?: {

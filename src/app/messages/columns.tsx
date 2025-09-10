@@ -25,7 +25,7 @@ export const createColumns = ({
     cell: ({ row }) => (
       <div className="text-sm text-gray-900">#{row.getValue("id")}</div>
     ),
-    enableSorting: false,
+    enableSorting: true,
     enableHiding: false,
   },
   {

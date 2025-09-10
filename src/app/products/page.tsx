@@ -722,6 +722,7 @@ export default function ProductsPage() {
               data={products}
               searchKey="name_en"
               searchPlaceholder="Search products..."
+              initialSorting={[{ id: "id", desc: false }]}
             />
           )}
         </div>
