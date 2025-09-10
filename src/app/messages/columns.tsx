@@ -69,7 +69,7 @@ export const createColumns = ({
         <select
           value={status}
           onChange={(e) => onStatusUpdate(message.id, e.target.value)}
-          className="text-xs px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          className="text-xs px-2 py-1 border border-gray-300 rounded focus:ring-1 focus:ring-brand-primary focus:border-brand-primary"
         >
           <option value="unread">Unread</option>
           <option value="read">Read</option>

@@ -1,77 +1,12 @@
 "use client";
 
-
-import Link from "next/link";
-import {
-  Home,
-  FolderOpen,
-  Package,
-  ClipboardList,
-  Users,
-  MessageCircle,
-  Settings,
-  User,
-  LogOut,
-} from "lucide-react";
+import AdminLayout from "@/components/AdminLayout";
 
 export default function ProfilePage() {
 
-  const menuItems = [
-    { id: "home", label: "Home", icon: Home, href: "/" },
-    { id: "categories", label: "Categories", icon: FolderOpen, href: "/categories" },
-    { id: "products", label: "Products", icon: Package, href: "/products" },
-    { id: "orders", label: "Orders", icon: ClipboardList, href: "/orders" },
-    { id: "users", label: "Users", icon: Users, href: "/users" },
-    { id: "messages", label: "Messages", icon: MessageCircle, href: "/messages" },
-    { id: "misc", label: "Extra Settings", icon: Settings, href: "/extra-settings" },
-  ];
-
-  const bottomMenuItems = [
-    { id: "profile", label: "Profile", icon: User, href: "/profile" },
-    { id: "logout", label: "Logout", icon: LogOut, href: "/logout" },
-  ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Left Sidebar */}
-      <div className="w-64 bg-gray-900 text-white flex flex-col">
-        {/* Navigation Menu */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Bottom Menu Items */}
-        <div className="p-4 border-t border-gray-800">
-          <ul className="space-y-2">
-            {bottomMenuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-auto">
+    <AdminLayout>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between">
@@ -92,15 +27,15 @@ export default function ProfilePage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" defaultValue="John Doe" />
+                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" defaultValue="John Doe" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" defaultValue="john.doe@example.com" />
+                <input type="email" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" defaultValue="john.doe@example.com" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" defaultValue="+1-555-0123" />
+                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" defaultValue="+1-555-0123" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
@@ -115,19 +50,19 @@ export default function ProfilePage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" defaultValue="admin" />
+                <input className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" defaultValue="admin" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Current Password</label>
-                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
-                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none" />
+                <input type="password" className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none" />
               </div>
             </div>
           </section>
@@ -138,21 +73,21 @@ export default function ProfilePage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Language</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none">
                   <option>English</option>
                   <option>Romanian</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Timezone</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none">
                   <option>UTC</option>
                   <option>GMT+2 (Bucharest)</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Notifications</label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none">
                   <option>All notifications</option>
                   <option>Only important</option>
                   <option>None</option>
@@ -180,7 +115,6 @@ export default function ProfilePage() {
             </div>
           </section>
         </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }

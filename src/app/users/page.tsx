@@ -2,15 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { 
-  Home, 
-  FolderOpen, 
-  Package, 
-  ClipboardList, 
-  Users, 
-  MessageCircle, 
-  Settings, 
-  User as UserIcon, 
-  LogOut,
   Eye,
   Edit,
   Trash2
@@ -29,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/ui/data-table";
 import { createColumns } from "./columns";
+import AdminLayout from "@/components/AdminLayout";
 
 export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
@@ -153,62 +145,9 @@ export default function UsersPage() {
     setSelectedUser(null);
   };
 
-  const menuItems = [
-    { id: "home", label: "Home", icon: Home, href: "/" },
-    { id: "categories", label: "Categories", icon: FolderOpen, href: "/categories" },
-    { id: "products", label: "Products", icon: Package, href: "/products" },
-    { id: "orders", label: "Orders", icon: ClipboardList, href: "/orders" },
-    { id: "users", label: "Users", icon: Users, href: "/users" },
-    { id: "messages", label: "Messages", icon: MessageCircle, href: "/messages" },
-    { id: "misc", label: "Extra Settings", icon: Settings, href: "/extra-settings" },
-  ];
-
-  const bottomMenuItems = [
-    { id: "profile", label: "Profile", icon: UserIcon, href: "/profile" },
-    { id: "logout", label: "Logout", icon: LogOut, href: "/logout" },
-  ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Left Sidebar */}
-      <div className="w-64 bg-gray-900 text-white flex flex-col">
-        {/* Navigation Menu */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Bottom Menu Items */}
-        <div className="p-4 border-t border-gray-800">
-          <ul className="space-y-2">
-            {bottomMenuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-auto">
+    <AdminLayout>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -230,7 +169,7 @@ export default function UsersPage() {
             <div className="p-6">
               {loading ? (
                 <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto"></div>
                   <p className="mt-2 text-gray-500">Loading users...</p>
                 </div>
               ) : error ? (
@@ -238,7 +177,7 @@ export default function UsersPage() {
                   <div className="text-red-500 text-lg">{error}</div>
                   <button 
                     onClick={fetchUsers}
-                    className="mt-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    className="mt-2 px-4 py-2 bg-brand-primary text-white rounded-lg hover:bg-brand-primary-hover transition-colors"
                   >
                     Retry
                   </button>
@@ -258,7 +197,6 @@ export default function UsersPage() {
             </div>
           </div>
         </div>
-      </div>
 
       {/* View User Modal */}
       <Dialog open={showViewModal} onOpenChange={setShowViewModal}>
@@ -398,7 +336,7 @@ export default function UsersPage() {
                 value={formData.role}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
               >
                 <option value="customer">Customer</option>
                 <option value="admin">Admin</option>
@@ -411,7 +349,7 @@ export default function UsersPage() {
                 name="is_active"
                 checked={formData.is_active}
                 onChange={handleInputChange}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-brand-primary focus:ring-brand-primary border-gray-300 rounded"
               />
               <label className="ml-2 block text-sm text-gray-900">
                 User is active
@@ -454,6 +392,6 @@ export default function UsersPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </div>
+    </AdminLayout>
   );
 }

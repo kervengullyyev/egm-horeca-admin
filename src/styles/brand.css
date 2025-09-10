@@ -1,0 +1,40 @@
+/* EGM HORECA Brand Colors */
+:root {
+  --brand-primary: #3881D4;
+  --brand-primary-hover: #2c6bb8;
+  --brand-primary-light: #e3f2fd;
+  --brand-primary-dark: #1e5a9c;
+}
+
+/* Custom brand color utilities */
+.brand-primary {
+  color: var(--brand-primary);
+}
+
+.bg-brand-primary {
+  background-color: var(--brand-primary);
+}
+
+.border-brand-primary {
+  border-color: var(--brand-primary);
+}
+
+.text-brand-primary {
+  color: var(--brand-primary);
+}
+
+.hover\:bg-brand-primary:hover {
+  background-color: var(--brand-primary);
+}
+
+.hover\:text-brand-primary:hover {
+  color: var(--brand-primary);
+}
+
+.focus\:ring-brand-primary:focus {
+  --tw-ring-color: var(--brand-primary);
+}
+
+.focus\:border-brand-primary:focus {
+  border-color: var(--brand-primary);
+}

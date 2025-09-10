@@ -2,15 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { 
-  Home, 
-  FolderOpen, 
-  Package, 
-  ClipboardList, 
-  Users, 
-  MessageCircle, 
-  Settings, 
-  User, 
-  LogOut,
   Plus,
   X,
   Upload
@@ -31,6 +22,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
+import AdminLayout from "@/components/AdminLayout";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -51,20 +43,6 @@ export default function CategoriesPage() {
   const [imagePreview, setImagePreview] = useState<string>("");
   const [uploading, setUploading] = useState(false);
 
-  const menuItems = [
-    { id: "home", label: "Home", icon: Home, href: "/" },
-    { id: "categories", label: "Categories", icon: FolderOpen, href: "/categories" },
-    { id: "products", label: "Products", icon: Package, href: "/products" },
-    { id: "orders", label: "Orders", icon: ClipboardList, href: "/orders" },
-    { id: "users", label: "Users", icon: Users, href: "/users" },
-    { id: "messages", label: "Messages", icon: MessageCircle, href: "/messages" },
-    { id: "misc", label: "Extra Settings", icon: Settings, href: "/extra-settings" },
-  ];
-
-  const bottomMenuItems = [
-    { id: "profile", label: "Profile", icon: User, href: "/profile" },
-    { id: "logout", label: "Logout", icon: LogOut, href: "/logout" },
-  ];
 
   useEffect(() => {
     fetchCategories();
@@ -270,46 +248,7 @@ export default function CategoriesPage() {
 
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Left Sidebar */}
-      <div className="w-64 bg-gray-900 text-white flex flex-col">
-        {/* Navigation Menu */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Bottom Menu Items */}
-        <div className="p-4 border-t border-gray-800">
-          <ul className="space-y-2">
-            {bottomMenuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-auto">
+    <AdminLayout>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -388,7 +327,7 @@ export default function CategoriesPage() {
                       value={formData.description_en}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
                     />
                   </div>
                   
@@ -401,7 +340,7 @@ export default function CategoriesPage() {
                       value={formData.description_ro}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent outline-none"
                     />
                   </div>
                   
@@ -501,7 +440,7 @@ export default function CategoriesPage() {
         <div className="p-6">
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-primary mx-auto mb-4"></div>
               <div className="text-gray-600">Loading categories...</div>
             </div>
           ) : (
@@ -513,7 +452,6 @@ export default function CategoriesPage() {
             />
           )}
         </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }

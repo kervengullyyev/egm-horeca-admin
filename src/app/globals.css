@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary: oklch(0.205 0 0);
+  --primary: #3881D4;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -80,7 +80,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary: #3b82f6;
+    --primary: #3881D4;
     --primary-foreground: #0a0a0a;
     --secondary: #16a34a;
     --secondary-foreground: #ffffff;
@@ -125,7 +125,9 @@
   * {
     @apply border-border outline-ring/50;
   }
-  body {
+  html, body {
     @apply bg-background text-foreground;
+    height: 100%;
+    overflow: hidden;
   }
 }

@@ -3,19 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
-  Home, 
-  FolderOpen, 
-  Package, 
-  ClipboardList, 
-  Users, 
-  MessageCircle, 
-  Settings, 
-  User, 
-  LogOut,
   TrendingUp,
-  DollarSign
+  DollarSign,
+  Package,
+  ClipboardList,
+  Users,
+  FolderOpen
 } from "lucide-react";
 import { api, DashboardStats } from "@/lib/api";
+import AdminLayout from "@/components/AdminLayout";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -41,25 +37,11 @@ export default function AdminDashboard() {
     fetchDashboardStats();
   }, []);
 
-  const menuItems = [
-    { id: "home", label: "Home", icon: Home, href: "/" },
-    { id: "categories", label: "Categories", icon: FolderOpen, href: "/categories" },
-    { id: "products", label: "Products", icon: Package, href: "/products" },
-    { id: "orders", label: "Orders", icon: ClipboardList, href: "/orders" },
-    { id: "users", label: "Users", icon: Users, href: "/users" },
-    { id: "messages", label: "Messages", icon: MessageCircle, href: "/messages" },
-    { id: "misc", label: "Extra Settings", icon: Settings, href: "/extra-settings" },
-  ];
-
-  const bottomMenuItems = [
-    { id: "profile", label: "Profile", icon: User, href: "/profile" },
-    { id: "logout", label: "Logout", icon: LogOut, href: "/logout" },
-  ];
 
   const summaryCards = [
     {
       title: "Total Revenue",
-      value: stats ? `$${stats.total_revenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : "$0.00",
+      value: stats ? `${stats.total_revenue.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} RON` : "0.00 RON",
       change: "+20.1% from last month",
       button: "View Orders",
       icon: DollarSign,
@@ -71,7 +53,7 @@ export default function AdminDashboard() {
       change: "+12 new this month",
       button: "Manage Products",
       icon: Package,
-      color: "text-blue-600"
+      color: "text-brand-primary"
     },
     {
       title: "Orders",
@@ -93,7 +75,7 @@ export default function AdminDashboard() {
   ];
 
   const quickActions = [
-    { label: "Categories", icon: FolderOpen, color: "text-blue-600", href: "/categories" },
+    { label: "Categories", icon: FolderOpen, color: "text-brand-primary", href: "/categories" },
     { label: "Products", icon: Package, color: "text-green-600", href: "/products" },
     { label: "Orders", icon: ClipboardList, color: "text-purple-600", href: "/orders" },
     { label: "Users", icon: Users, color: "text-orange-600", href: "/users" }
@@ -107,46 +89,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Left Sidebar */}
-      <div className="w-64 bg-gray-900 text-white flex flex-col">
-        {/* Navigation Menu */}
-        <nav className="flex-1 p-4">
-          <ul className="space-y-2">
-            {menuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-
-        {/* Bottom Menu Items */}
-        <div className="p-4 border-t border-gray-800">
-          <ul className="space-y-2">
-            {bottomMenuItems.map((item) => (
-              <li key={item.id}>
-                <Link
-                  href={item.href}
-                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
-                >
-                  <item.icon className="h-5 w-5" />
-                  <span className="font-medium">{item.label}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* Main Content Area */}
-      <div className="flex-1 overflow-auto">
+    <AdminLayout>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -178,7 +121,7 @@ export default function AdminDashboard() {
                     href={card.button === "View Orders" ? "/orders" : 
                           card.button === "Manage Products" ? "/products" : 
                           card.button === "View Customers" ? "/users" : "#"}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-brand-primary hover:text-brand-primary-hover hover:bg-brand-primary-light rounded-lg transition-colors"
                   >
                   {card.button}
                 </Link>
@@ -219,7 +162,7 @@ export default function AdminDashboard() {
               <div className="space-y-4">
                 {recentActivity.map((activity, index) => (
                   <div key={index} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                    <div className="w-2 h-2 bg-brand-primary rounded-full mt-2"></div>
                     <div className="flex-1">
                       <p className="text-sm font-medium text-gray-900">{activity.action}</p>
                       <p className="text-sm text-gray-500">{activity.detail}</p>
@@ -249,7 +192,6 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+    </AdminLayout>
   );
 }
