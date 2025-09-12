@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Order } from "@/lib/api";
 import { DataTable } from "@/components/ui/data-table";
 import { createColumns } from "./columns";
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function OrdersPage() {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -164,7 +164,7 @@ export default function OrdersPage() {
   };
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -820,6 +820,6 @@ export default function OrdersPage() {
           )}
         </DialogContent>
       </Dialog>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

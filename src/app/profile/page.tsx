@@ -1,12 +1,12 @@
 "use client";
 
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function ProfilePage() {
 
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between">
@@ -115,6 +115,6 @@ export default function ProfilePage() {
             </div>
           </section>
         </div>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

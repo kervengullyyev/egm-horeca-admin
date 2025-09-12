@@ -1,12 +1,12 @@
 "use client";
 
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function ExtraSettingsPage() {
 
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -74,6 +74,6 @@ export default function ExtraSettingsPage() {
             <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Clear test data</button>
           </div>
         </div>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

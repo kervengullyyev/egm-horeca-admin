@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
 import { createColumns } from "./columns";
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function MessagesPage() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -74,7 +74,7 @@ export default function MessagesPage() {
 
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -224,6 +224,6 @@ export default function MessagesPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

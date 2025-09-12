@@ -11,7 +11,7 @@ import {
   FolderOpen
 } from "lucide-react";
 import { api, DashboardStats } from "@/lib/api";
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -192,6 +192,6 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

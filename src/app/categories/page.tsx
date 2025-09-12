@@ -22,8 +22,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { DataTable } from "@/components/ui/data-table";
 import { columns } from "./columns";
-import AdminLayout from "@/components/AdminLayout";
 import SortableCategoriesTable from "@/components/SortableCategoriesTable";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -253,7 +253,7 @@ export default function CategoriesPage() {
 
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
@@ -457,6 +457,6 @@ export default function CategoriesPage() {
             />
           )}
         </div>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

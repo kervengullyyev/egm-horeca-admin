@@ -25,7 +25,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { DataTable } from "@/components/ui/data-table";
 import { createColumns } from "./columns";
-import AdminLayout from "@/components/AdminLayout";
+import ProtectedPage from "@/components/ProtectedPage";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -405,7 +405,7 @@ export default function ProductsPage() {
 
 
   return (
-    <AdminLayout>
+    <ProtectedPage>
         <div className="bg-white border-b border-gray-200 p-6">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Products</h1>
@@ -968,6 +968,6 @@ export default function ProductsPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </AdminLayout>
+    </ProtectedPage>
   );
 }

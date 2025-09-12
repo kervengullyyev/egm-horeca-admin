@@ -16,9 +16,22 @@ class ApiClient {
     options: RequestInit = {}
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
+    
+    // Get auth headers if available
+    let authHeaders = {};
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('admin_token');
+      if (token) {
+        authHeaders = {
+          'Authorization': `Bearer ${token}`,
+        };
+      }
+    }
+    
     const config: RequestInit = {
       headers: {
         'Content-Type': 'application/json',
+        ...authHeaders,
         ...options.headers,
       },
       ...options,
@@ -28,6 +41,18 @@ class ApiClient {
       const response = await fetch(url, config);
       
       if (!response.ok) {
+        // Handle 401 Unauthorized
+        if (response.status === 401) {
+          // Clear auth data and redirect to login
+          if (typeof window !== 'undefined') {
+            localStorage.removeItem('admin_token');
+            localStorage.removeItem('admin_user');
+            localStorage.removeItem('admin_token_expiry');
+            // Use replace to avoid back button issues
+            window.location.replace('/login');
+          }
+          throw new Error('Authentication required');
+        }
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
